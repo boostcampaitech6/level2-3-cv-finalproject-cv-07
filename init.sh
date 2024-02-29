@@ -1,6 +1,6 @@
 # git 설정
-git config —global commit.template ./.commit_template
-git config —global core.editor "code —wait"
+git config --global commit.template ./.commit_template
+git config --global core.editor "code --wait"
 echo -e "\e[34mFin git config\e[0m"
 
 # pre-commit 설정
