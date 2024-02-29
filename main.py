@@ -17,6 +17,11 @@ import util.misc as utils
 from datasets import build_dataset
 from engine import evaluate, train_one_epoch
 from models import build_model
+import wandb
+
+
+wandb.init(project="level3_nota")
+wandb.run.name = "실험명"
 
 
 def get_args_parser():
@@ -136,10 +141,13 @@ def main(args):
     device = torch.device(args.device)
 
     # fix the seed for reproducibility
-    seed = args.seed + utils.get_rank()
-    torch.manual_seed(seed)
-    np.random.seed(seed)
+    seed = args.seed
     random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    np.random.seed(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmarks = False
 
     # build model
     model, criterion = build_model(args)
@@ -242,6 +250,8 @@ def main(args):
 
     # training
     print("Start training")
+
+    wandb.watch(model, criterion, log="all", log_freq=10)
     start_time = time.time()
     for epoch in range(args.start_epoch, args.epochs):
         if args.distributed:
@@ -336,6 +346,10 @@ def main(args):
                 src_path = output_dir / "checkpoint.pth"
                 dst_path = output_dir / "best_checkpoint.pth"
                 shutil.copyfile(src_path, dst_path)
+
+            wandb.log(
+                {"mae": mae, "time": t2 - t1, "loss": train_stats["loss"]}, step=epoch
+            )
 
     total_time = time.time() - start_time
     total_time_str = str(datetime.timedelta(seconds=int(total_time)))
