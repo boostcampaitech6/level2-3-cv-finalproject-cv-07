@@ -153,6 +153,7 @@ def main(args):
     # build model
     model, criterion = build_model(args)
     model.to(device)
+    model.eval()
 
     model_without_ddp = model
     if args.distributed:
