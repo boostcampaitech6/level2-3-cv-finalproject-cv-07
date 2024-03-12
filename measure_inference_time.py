@@ -20,11 +20,21 @@ from PIL import Image
 from tqdm import tqdm
 
 import wandb
+import glob
+
+import re
 
 wandb.init(project="level3_nota")
 wandb.run.name = (
-    "mixtest_em_time"  # wandb에 기록된 실험이름에 time을 붙여주세요 : 간단한설명_time
+    "ys_enc_test_time"  # wandb에 기록된 실험이름에 time을 붙여주세요 : 간단한설명_time
 )
+
+
+def natural_keys(text):
+    """
+    alist.sort(key=natural_keys)를 사용하면, 텍스트에 포함된 숫자를 기준으로 정렬할 수 있습니다.
+    """
+    return [int(c) if c.isdigit() else c for c in re.split("(\d+)", text)]
 
 
 def get_args_parser():
@@ -113,7 +123,7 @@ def get_args_parser():
     parser.add_argument("--seed", default=42, type=int)
     parser.add_argument(
         "--resume",
-        default="./outputs/SHA/pet_model/best_checkpoint.pth",
+        default="./outputs/SHA/original/best_checkpoint.pth",
         help="resume from checkpoint",
     )
     parser.add_argument("--vis_dir", default="")
@@ -143,6 +153,7 @@ def main(args):
     # build model
     model, criterion = build_model(args)
     model.to(device)
+    model.eval()
 
     model_without_ddp = model
     if args.distributed:
@@ -164,10 +175,13 @@ def main(args):
         model_without_ddp.load_state_dict(checkpoint["model"])
         cur_epoch = checkpoint["epoch"] if "epoch" in checkpoint else 0
 
-    # read image
-    img_path = "./IMG_57.jpg"
-    img = cv2.imread(img_path)
-    img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+    # get image paths
+    img_dir = "./data/ShanghaiTech/part_A/test_data/images"
+    img_paths = glob.glob(os.path.join(img_dir, "*.jpg"))
+    num_images = len(img_paths)
+
+    # natural_keys 함수를 사용하여 정렬
+    img_paths.sort(key=natural_keys)
 
     transform = standard_transforms.Compose(
         [
@@ -178,35 +192,48 @@ def main(args):
         ]
     )
 
+    repetitions = 10
+    timings = np.zeros((num_images, repetitions))
+
+    img = cv2.imread("./IMG_57.jpg")
+    img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     img = transform(img)
     img = torch.Tensor(img).to(device)
     img.unsqueeze_(0)
-    print(img.shape)
-
-    starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(
-        enable_timing=True
-    )
-    repetitions = 1000
-    timings = np.zeros((repetitions, 1))
     for _ in range(10):
         _ = model(img, test=True)
 
-    with torch.no_grad():
-        for rep in tqdm(range(repetitions)):
-            starter.record()
-            _ = model(img, test=True)
-            ender.record()
-            torch.cuda.synchronize()
-            curr_time = starter.elapsed_time(ender)
-            timings[rep] = curr_time
+    for i, img_path in enumerate(tqdm(img_paths)):
+        img = cv2.imread(img_path)
+        img = Image.fromarray(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
+        img = transform(img)
+        img = torch.Tensor(img).to(device)
+        img.unsqueeze_(0)
 
-            # wandb에 현재 실험의 결과를 기록
-            wandb.log({"Inference Time": curr_time})
+        starter, ender = torch.cuda.Event(enable_timing=True), torch.cuda.Event(
+            enable_timing=True
+        )
 
-    mean_syn = np.sum(timings) / repetitions
-    std_syn = np.std(timings)
+        with torch.no_grad():
+            for j in range(repetitions):
+                starter.record()
+                _ = model(img, test=True)
+                ender.record()
+                torch.cuda.synchronize()
+                curr_time = starter.elapsed_time(ender)
+                timings[i, j] = curr_time
+                wandb.log({"Inference Time": curr_time})
 
-    print(f"Mean time = {mean_syn}ms, std = {std_syn}ms")
+    total_time_ms = np.sum(timings) / 1000
+    avg_time_per_set = total_time_ms / repetitions
+    avg_time_per_image = np.mean(timings)
+    std_dev_per_image = np.std(timings)
+
+    print(f"Total time = {total_time_ms}s")
+    print(f"Average time per set = {avg_time_per_set}s")
+    print(
+        f"Average time per image = {avg_time_per_image}ms, std_dev = {std_dev_per_image}ms"
+    )
 
 
 if __name__ == "__main__":
