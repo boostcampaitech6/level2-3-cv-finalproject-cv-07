@@ -386,10 +386,10 @@ class EncoderLayer(nn.Module):
         src = src + src2
         src = self.norm1(src)
 
-        src2 = self.linear2(self.activation(self.linear1(src)))
+        # src2 = self.linear2(self.activation(self.linear1(src)))
         # src2 = self.activation(src)
-        src = src + src2
-        src = self.norm2(src)
+        # src = src + src2
+        # src = self.norm2(src)
         return src
 
 
