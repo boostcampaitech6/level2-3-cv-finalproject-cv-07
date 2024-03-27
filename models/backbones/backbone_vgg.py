@@ -69,7 +69,7 @@ class BackboneBase_VGG(nn.Module):
         self.return_interm_layers = return_interm_layers
         if name == 'vgg16_bn':
             self.fpn = FeatsFusion(256, 512, 512, hidden_size=num_channels, out_size=num_channels, out_kernel=3)
-        if name == 'vgg13_bn':
+        if name == 'vgg13_bn': 
             self.fpn = FeatsFusion(128, 256, 512, hidden_size=num_channels, out_size=num_channels, out_kernel=3)
 
     def forward(self, tensor_list: NestedTensor):
