@@ -139,6 +139,7 @@ class BasePETCount(nn.Module):
         v_idx = valid_div > 0
         query_embed_win = query_embed_win[:, v_idx]
         query_feats_win = query_feats_win[:, v_idx]
+        v_idx = v_idx.cpu()
         points_queries_win = points_queries_win[:, v_idx].reshape(-1, 2)
 
         return query_embed_win, points_queries_win, query_feats_win, v_idx
@@ -246,7 +247,8 @@ class PET(nn.Module):
 
         # context encoder
         self.encode_feats = "8x"
-        enc_win_list = [(32, 16), (32, 16), (16, 8), (16, 8)]  # encoder window size
+        # enc_win_list = [(32, 16), (32, 16), (16, 8), (16, 8)]  # original encoder window size
+        enc_win_list = [(32, 16), (8, 4)]
         args.enc_layers = len(enc_win_list)
         self.context_encoder = build_encoder(args, enc_win_list=enc_win_list)
 
