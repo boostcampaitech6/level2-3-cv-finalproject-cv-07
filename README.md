@@ -23,4 +23,21 @@
 ## 프로젝트 목표
 Transformer 기반의 군중 계수 SOTA 모델인 PET (Chengxin Liu et al., ICCV 2023)모델을 구성하는 레이어/블록을 재설계하여 모델의 정확도(MAE (Mean Absolute Error))을 최대한 유지하면서도, CPU/GPU에서의 추론 속도를 개선
 
+## 설치 및 실행
+```shell
+git clone https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07.git
+cd level2-3-cv-finalproject-cv-07
+mkdir data
+# https://paperswithcode.com/dataset/shanghaitech - ShanghaiTech A 데이터 다운로드 후 data 디렉토리에 넣기
 
+pip install -r requirements.txt
+
+# train 시
+sh ./train.sh
+# transformer 다른 메소드로 변경 시
+# ./models/transformer/__init__.py 에 from .prog_win_transformer import build_encoder, build_decoder 해당 부분 변경
+
+# eval 시
+sh ./evel.sh
+
+```
