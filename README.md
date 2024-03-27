@@ -69,8 +69,8 @@ sh ./evel.sh
 
 3. Component 재설계
     
-<img width="800" alt="스크린샷 2024-03-27 오후 12 33 02" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/87661039/382959bc-ece0-4d70-aceb-093b3e3cac28">
-    
+<img width="600" alt="스크린샷 2024-03-27 오후 12 39 12" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/87661039/ac66602d-e12d-47cc-9ae0-5ff01d389c35">
+   
 - encoder block 개수 최적화
 - window size 최적화
 - FFN 조정
