@@ -44,7 +44,7 @@ class FeatsFusion(nn.Module):
 
         return [P3_x, P4_x, P5_x]
     
-
+ 
 class BackboneBase_VGG(nn.Module):
     def __init__(self, backbone: nn.Module, num_channels: int, name: str, return_interm_layers: bool):
         super().__init__()

@@ -24,7 +24,7 @@ model_paths = {
     'vgg16_bn': './pretrained/vgg16_bn-6c64b313.pth',
     'vgg13_bn': './pretrained/vgg13_bn-abd245e5.pth'
 }
- 
+  
 
 class VGG(nn.Module):
 
