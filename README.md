@@ -41,6 +41,66 @@ sh ./train.sh
 sh ./evel.sh
 
 ```
+# 🛠️Methodology
+
+### Backbone 경량화
+
+<img width="600" alt="image" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/83398511/b6ba1588-2519-4065-9b28-a970de5a5214">
+
+
+- Backbone 교체: mobilenet_v3, vgg11_bn, vgg13_bn
+- Backbone layer 제거: 비중이 낮은 Batchnorm layer를 선별, 제거
+
+### Encoder 경량화
+
+1. PoolFormer
+<img width="600" alt="image" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/83398511/34a2a9b9-3c3d-42c9-b47f-cf9f8505a04b">
+    
+- PET의 Encoder에 self attention 연산을 pooling으로 대체
+- 연산을 효율적으로 계산, token mixer 역할 수행
+- cross-channel pooling을 사용해 여러 feature map 간 정보 통합
+
+1. Depthwise
+    
+    ![화면 캡처 2024-03-27 103012.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83380311-3019-4d02-a874-22079efc414e/1e6144d4-477e-4ecf-9178-24c241a5c119/%ED%99%94%EB%A9%B4_%EC%BA%A1%EC%B2%98_2024-03-27_103012.png)
+    
+- Poolformer 사용 시 성능 하락 보완하기 위해 depthwise convolution 사용
+- 지연 시간 오버헤드 도입하지 않으면서 성능 향상
+
+1. Component 재설계
+    
+    ![화면 캡처 2024-03-27 104632.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83380311-3019-4d02-a874-22079efc414e/2ec36c21-f75f-42ab-bc32-7630cbe3ceba/%ED%99%94%EB%A9%B4_%EC%BA%A1%EC%B2%98_2024-03-27_104632.png)
+    
+- encoder block 개수 최적화
+- window size 최적화
+- FFN 조정
+
+### Encoder, Decoder 경량화
+
+![화면 캡처 2024-03-27 103526.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83380311-3019-4d02-a874-22079efc414e/0f1720b8-920b-4414-a39c-dcd1de59dcf3/%ED%99%94%EB%A9%B4_%EC%BA%A1%EC%B2%98_2024-03-27_103526.png)
+
+- encoder, decoder의 linear layer, layer norm 간소화
+- Linear layer를 1x1 convolution으로 대체
+- Feed froward network 조정
+
+### **TOP 3**
+
+**Mae 측면**
+
+|  | 실험명 | Best MAE | Inference time |
+| --- | --- | --- | --- |
+| encoder reduction | encoder layer X 2 + [(32,16),(8,4)] | 약 6.22% 감소(50.49→47.35) | 6.92ms 감소(63.95→57.03) |
+| poolformer | Enc win size  1/4 + attnX2-> poolingX2 | 약 0.30% 감소(50.13→49.98) | 5.6ms 감소(63.95→58.35) |
+| depthwise | depthwise encoder layer 1개 [(8,4)] | 약 0.02% 증가(52.39 → 52.4) | 8.29ms 감소(65.62 → 57.33) |
+
+**Inference 측면**
+
+|  | 실험명 | Best MAE | Inference time |
+| --- | --- | --- | --- |
+| encoder reduction | encoder layer X 2 + [(32,16),(8,4)]• ffn 제거 | 약 1.78% 증가 (50.49→51.39) | 9.19ms 감소 (63.95→54.76) |
+| poolformer | layer reduction + pooling(X2) [(32,16),(8,4)] | 약 6.98% 증가 (50.13→53.63) | 6.98ms 감소 (63.95→56.97) |
+| depthwise | depthX1_attnX1 | 약 2.04% 증가 (52.39 → 53.46) | 9.27ms 감소 (63.95 → 54.68) |
+
 ### 최종 모델
 
 ![pet_A](https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/83398511/e66fccce-fcd4-4708-843a-e4b0da9b6ca7)
@@ -53,10 +113,7 @@ sh ./evel.sh
 
 |  | 실험명 | Best MAE | Inference time |
 | --- | --- | --- | --- |
-| encoder reduction | encoder layer X 2 + [(32,16),(8,4)] 
-+ ffn 제거 | 약 1.78% 증가 
-(50.49→51.39) | 9.19ms 감소 
-(63.95→54.76) |
+| encoder reduction | encoder layer X 2 + [(32,16),(8,4)] + ffn 제거 | 약 1.78% 증가 (50.49→51.39) | 9.19ms 감소 (63.95→54.76) |
 
 mae 측면에서 **성능하락이 1.78% 수준이며 inference time은 9.19ms** 대폭 감소하였기에
 
