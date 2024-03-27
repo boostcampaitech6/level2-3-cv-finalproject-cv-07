@@ -41,6 +41,28 @@ sh ./train.sh
 sh ./evel.sh
 
 ```
+### 최종 모델
+
+![pet_A](https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/83398511/e66fccce-fcd4-4708-843a-e4b0da9b6ca7)
+![our_model](https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/83398511/4c3bf7d0-1f02-4a5d-8d8e-59d6886dac32)
+
+
+1. encoder layer를 4개에서 2개로 감소
+2. Encoder window size를 [(32,16),(16,8)] 에서 [(32,16),(8,4)]로 변경
+3. 인코더 및 디코더에서 FFN을 제거
+
+|  | 실험명 | Best MAE | Inference time |
+| --- | --- | --- | --- |
+| encoder reduction | encoder layer X 2 + [(32,16),(8,4)] 
++ ffn 제거 | 약 1.78% 증가 
+(50.49→51.39) | 9.19ms 감소 
+(63.95→54.76) |
+
+mae 측면에서 **성능하락이 1.78% 수준이며 inference time은 9.19ms** 대폭 감소하였기에
+
+mae와 inference time 측면 모두에서 top 3의 수준을 기록하였다.
+
+**mae : 51.39 inference time 54.76ms로 최종 모델로 선정 되었다.**
 
 ## References
 1) [Liu, Chengxin, et al. "Point-query quadtree for crowd counting, localization, and more."](https://arxiv.org/pdf/2308.13814.pdf)
