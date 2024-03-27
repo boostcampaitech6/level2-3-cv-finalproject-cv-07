@@ -45,7 +45,7 @@ sh ./evel.sh
 
 ### Backbone 경량화
 
-<img width="600" alt="image" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/83398511/b6ba1588-2519-4065-9b28-a970de5a5214">
+<img width="800" alt="Untitled" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/87661039/c6be21a0-2015-4cb0-b22b-616281284790">
 
 
 - Backbone 교체: mobilenet_v3, vgg11_bn, vgg13_bn
@@ -54,22 +54,22 @@ sh ./evel.sh
 ### Encoder 경량화
 
 1. PoolFormer
-<img width="600" alt="image" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/83398511/34a2a9b9-3c3d-42c9-b47f-cf9f8505a04b">
+<img width="800" alt="image" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/83398511/34a2a9b9-3c3d-42c9-b47f-cf9f8505a04b">
     
 - PET의 Encoder에 self attention 연산을 pooling으로 대체
 - 연산을 효율적으로 계산, token mixer 역할 수행
 - cross-channel pooling을 사용해 여러 feature map 간 정보 통합
 
-1. Depthwise
+2. Depthwise
     
-    ![화면 캡처 2024-03-27 103012.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83380311-3019-4d02-a874-22079efc414e/1e6144d4-477e-4ecf-9178-24c241a5c119/%ED%99%94%EB%A9%B4_%EC%BA%A1%EC%B2%98_2024-03-27_103012.png)
+<img width="800" alt="스크린샷 2024-03-27 오후 12 30 54" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/87661039/a25b51e4-2eab-4dc1-8ae7-6542ad8b6d3b">
     
 - Poolformer 사용 시 성능 하락 보완하기 위해 depthwise convolution 사용
 - 지연 시간 오버헤드 도입하지 않으면서 성능 향상
 
-1. Component 재설계
+3. Component 재설계
     
-    ![화면 캡처 2024-03-27 104632.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83380311-3019-4d02-a874-22079efc414e/2ec36c21-f75f-42ab-bc32-7630cbe3ceba/%ED%99%94%EB%A9%B4_%EC%BA%A1%EC%B2%98_2024-03-27_104632.png)
+<img width="800" alt="스크린샷 2024-03-27 오후 12 33 02" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/87661039/382959bc-ece0-4d70-aceb-093b3e3cac28">
     
 - encoder block 개수 최적화
 - window size 최적화
@@ -77,7 +77,8 @@ sh ./evel.sh
 
 ### Encoder, Decoder 경량화
 
-![화면 캡처 2024-03-27 103526.png](https://prod-files-secure.s3.us-west-2.amazonaws.com/83380311-3019-4d02-a874-22079efc414e/0f1720b8-920b-4414-a39c-dcd1de59dcf3/%ED%99%94%EB%A9%B4_%EC%BA%A1%EC%B2%98_2024-03-27_103526.png)
+<img width="400" alt="스크린샷 2024-03-27 오후 12 33 55" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/87661039/a98863df-4192-4014-acb6-3946ebb07efb">
+
 
 - encoder, decoder의 linear layer, layer norm 간소화
 - Linear layer를 1x1 convolution으로 대체
