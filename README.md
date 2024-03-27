@@ -23,6 +23,21 @@
 ## 프로젝트 목표
 Transformer 기반의 군중 계수 SOTA 모델인 PET (Chengxin Liu et al., ICCV 2023)모델을 구성하는 레이어/블록을 재설계하여 모델의 정확도(MAE(Mean Absolute Error))을 최대한 유지하면서도, CPU/GPU에서의 추론 속도를 개선
 
+## 프로젝트 팀 구성 및 역할
+
+  |<a href="https://github.com/kimhankyu">김한규 </a>| <a href="https://github.com/haeun1">민하은 </a> | <a href="https://github.com/HayeonLee88">이하연 </a> | <a href="https://github.com/DorianYellow"> 심유승 </a>| <a href="https://github.com/chyeon01">안채연 </a>| <a href="https://github.com/KANG-dg">강동기 </a>| 
+  | :-: | :-: | :-: | :-: | :-: | :-: |
+  | <img width="100" src="https://avatars.githubusercontent.com/u/32727723?v=4"> | <img width="100" src="https://avatars.githubusercontent.com/u/87661039?v=4"> | <img width="100" src="https://avatars.githubusercontent.com/u/83398511?v=4"> | <img width="100" src="https://avatars.githubusercontent.com/u/146207162?v=4"> | <img width="100" src="https://avatars.githubusercontent.com/u/86558738?v=4"> | <img width="100" src="https://avatars.githubusercontent.com/u/121837927?v=4"> |
+
+- 강동기: backbone의 영향이 낮은 layer 구조 변경, transformer의 encoder, decoder구조 개선 (1x1convolution, batch norm, layer감소)
+- 김한규: transformer의 encoder layer 구조 개선(FastViT)
+- 민하은: vgg13_bn backbone 교체, transformer의 encoder layer 구조 개선(poolformer)
+- 심유승: Encoder 블록 재설계 - 블록개수 최적화, window size 최적화, FFN 조정
+- 안채연 : vgg11_bn backbone교체, transformer의 encoder layer 구조 개선 (depthwise)
+- 이하연: mobilenet backbone 교체, encoder progressive window size 변경, transformer의 encoder, decoder Parameters sharing, transformer의 encoder layer 구조 개선 (poolformer)
+
+
+
 ## 설치 및 실행
 ```shell
 git clone https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07.git
