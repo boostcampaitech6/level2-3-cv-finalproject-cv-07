@@ -26,7 +26,7 @@ class FeatsFusion(nn.Module):
         self.P3_2 = nn.Conv2d(hidden_size, out_size, kernel_size=out_kernel, stride=1, padding=out_kernel//2)
 
     def forward(self, inputs):
-        C3, C4, C5 = inputs
+        C3, C4, C5 = inputs  # (256, 512, 512)
         C3_shape, C4_shape, C5_shape = C3.shape[-2:], C4.shape[-2:], C5.shape[-2:]
 
         P5_x = self.P5_1(C5)
