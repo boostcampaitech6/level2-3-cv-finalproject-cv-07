@@ -20,7 +20,7 @@ class WinEncoderTransformer(nn.Module):
         self,
         d_model=256,
         nhead=8,
-        num_encoder_layers=4,
+        num_encoder_layers=2,
         dim_feedforward=512,
         dropout=0.0,
         activation="relu",
@@ -250,6 +250,12 @@ class TransformerEncoder(nn.Module):
         else:
             self.return_intermediate = False
 
+    """def __init__(self, encoder_layer, num_layers):
+        super().__init__()
+        # Use the same layer for all positions (sharing parameters)
+        self.layers = nn.ModuleList([encoder_layer for _ in range(num_layers)]) # Parameters shared across layers
+        self.num_layers = num_layers ### [3/3]"""
+
     def single_forward(
         self,
         src,
@@ -381,6 +387,7 @@ class EncoderLayer(nn.Module):
         src = self.norm1(src)
 
         src2 = self.linear2(self.activation(self.linear1(src)))
+        # src2 = self.activation(src)
         src = src + src2
         src = self.norm2(src)
         return src
@@ -439,9 +446,11 @@ class DecoderLayer(nn.Module):
         tgt = self.norm2(tgt)
 
         # feed-forward
-        tgt2 = self.linear2(self.activation(self.linear1(tgt)))
-        tgt = tgt + tgt2
-        tgt = self.norm3(tgt)
+        # tgt2 = self.linear2(self.activation(self.linear1(tgt)))
+        # tgt2 = self.linear2(self.linear_bottleneck(self.activation(self.linear1(tgt))))
+        # tgt2 = self.activation(tgt)
+        # tgt = tgt + tgt2
+        # tgt = self.norm3(tgt)
         return tgt
 
 
