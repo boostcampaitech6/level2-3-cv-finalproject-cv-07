@@ -3,7 +3,7 @@
 - Transformer 기반의 군중 계수 SOTA 모델인 PET(Point-Query Quadtree for Crowd Counting, Localization, and More)모델
 
 데이터셋
-- ShanghaiTech A(https://paperswithcode.com/dataset/shanghaitech)
+- [ShanghaiTech A](https://paperswithcode.com/dataset/shanghaitech)
 
 제공사항
 - 베이스 라인으로서 학습된 군중 계수 모델과 해당 모델을 학습 시킨 데이터 셋 제공
@@ -21,7 +21,7 @@
 24.02.26 ~ 24.03.27
 
 ## 프로젝트 목표
-Transformer 기반의 군중 계수 SOTA 모델인 PET (Chengxin Liu et al., ICCV 2023)모델을 구성하는 레이어/블록을 재설계하여 모델의 정확도(MAE (Mean Absolute Error))을 최대한 유지하면서도, CPU/GPU에서의 추론 속도를 개선
+Transformer 기반의 군중 계수 SOTA 모델인 PET (Chengxin Liu et al., ICCV 2023)모델을 구성하는 레이어/블록을 재설계하여 모델의 정확도(MAE(Mean Absolute Error))을 최대한 유지하면서도, CPU/GPU에서의 추론 속도를 개선
 
 ## 설치 및 실행
 ```shell
@@ -41,3 +41,13 @@ sh ./train.sh
 sh ./evel.sh
 
 ```
+
+## References
+1) [Liu, Chengxin, et al. "Point-query quadtree for crowd counting, localization, and more."](https://arxiv.org/pdf/2308.13814.pdf)
+2) [Yanyu Li, Ju Hu, et al. "Rethinking Vision Transformers for MobileNet Size and Speed."](https://arxiv.org/pdf/2212.08059.pdf)
+3) [Howard, Andrew, et al. "Searching for mobilenetv3."](https://arxiv.org/pdf/1905.02244.pdf)
+4) [Liu, Chengxin, et al. "Point-query quadtree for crowd counting, localization, and more."](https://openaccess.thecvf.com/content/ICCV2023/supplemental/Liu_Point-Query_Quadtree_for_ICCV_2023_supplemental.pdf)
+5) [Yu, Weihao, et al. "MetaFormer Is Actually What You Need for Vision"](https://arxiv.org/pdf/2308.13814.pdf)
+6) [Li, Yanyu, et al. "Efficientformer: Vision transformers at mobilenet speed."](https://arxiv.org/pdf/2206.01191.pdf)
+
+
