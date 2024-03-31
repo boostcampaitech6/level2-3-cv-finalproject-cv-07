@@ -1,9 +1,15 @@
 # 군중 계수(Crowd Counting) 모델의 계산 효율성을 위한 경량 모델링
+
+<img width="450" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/83398511/585ff861-3771-42ee-b03d-0fccad6d2896">
+
 모델링 대상
 - Transformer 기반의 군중 계수 SOTA 모델인 PET(Point-Query Quadtree for Crowd Counting, Localization, and More)모델
 
 데이터셋
 - [ShanghaiTech A](https://paperswithcode.com/dataset/shanghaitech)
+  
+  <img width="398" alt="image" src="https://github.com/boostcampaitech6/level2-3-cv-finalproject-cv-07/assets/83398511/6c42593c-c7c4-4cb6-ab91-f6f44c55e8bc">
+
 
 제공사항
 - 베이스 라인으로서 학습된 군중 계수 모델과 해당 모델을 학습 시킨 데이터 셋 제공
