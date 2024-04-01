@@ -143,6 +143,17 @@ mae와 inference time 측면 모두에서 top 3의 수준을 기록하였다.
 
 **mae : 51.39 inference time 54.76ms로 최종 모델로 선정 되었다.**
 
+## Citataion
+If you find this work helpful for your research, please consider citing:
+```
+@InProceedings{liu2023pet,
+  title={Point-Query Quadtree for Crowd Counting, Localization, and More},
+  author={Liu, Chengxin and Lu, Hao and Cao, Zhiguo and Liu, Tongliang},
+  booktitle={Proceedings of the IEEE/CVF International Conference on Computer Vision (ICCV)},
+  year={2023}
+}
+```
+
 ## References
 1) [Liu, Chengxin, et al. "Point-query quadtree for crowd counting, localization, and more."](https://arxiv.org/pdf/2308.13814.pdf)
 2) [Yanyu Li, Ju Hu, et al. "Rethinking Vision Transformers for MobileNet Size and Speed."](https://arxiv.org/pdf/2212.08059.pdf)
